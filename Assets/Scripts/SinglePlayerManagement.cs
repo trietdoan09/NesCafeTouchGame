@@ -5,22 +5,19 @@ using UnityEngine.UI;
 
 public class SinglePlayerManagement : MonoBehaviour
 {
-    [SerializeField] private GameObject test;
-    [SerializeField] private Sprite[] faceIcons;
-    [SerializeField] private Sprite[] nonFaceIcons;
-    private bool isStop;
+    [SerializeField] private GameObject iconFace;
+    [SerializeField] private GameObject iconNonFace;
 
     // Start is called before the first frame update
     void Start()
     {
-        //test.transform.position += new Vector3(0, -3 * Time.deltaTime, 0);
         RandomSpawn();
+        InvokeRepeating("RandomSpawn", 3f, 1);
     }
 
     // Update is called once per frame
     void Update()
     {
-        test.transform.position += new Vector3(0, -3 * Time.deltaTime, 0);
     }
     private void RandomSpawn()
     {
@@ -37,31 +34,10 @@ public class SinglePlayerManagement : MonoBehaviour
     }
     private void SpawnIcon()
     {
-        var _nonface = Instantiate(test);
-        var randomPos = Random.Range(0, 2);
-        _nonface.GetComponent<SpriteRenderer>().sprite = nonFaceIcons[randomPos];
-        StartCoroutine(IconDrop(_nonface));
+        var _nonface = Instantiate(iconNonFace);
     }
     private void SpawnFace()
     {
-        var _face = Instantiate(test);
-        var randomPos = Random.Range(0, 2);
-        _face.GetComponent<SpriteRenderer>().sprite = faceIcons[randomPos];
-        StartCoroutine(IconDrop(_face));
-    }
-    IEnumerator IconDrop(GameObject _gameObject)
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(0.01f);
-            _gameObject.transform.position += new Vector3(0, -3 * Time.deltaTime, 0);
-            if (gameObject.transform.position.y < -5.7)
-            {
-                isStop = true;
-                Destroy(_gameObject);
-            }
-            StopCoroutine(IconDrop(_gameObject));
-            yield return null;
-        }
+        var _face = Instantiate(iconFace);
     }
 }
