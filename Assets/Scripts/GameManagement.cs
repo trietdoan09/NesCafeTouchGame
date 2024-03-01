@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class GameManagement : MonoBehaviour
 {
+    [SerializeField] private GameData gameData;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,10 +19,12 @@ public class GameManagement : MonoBehaviour
     }
     public void SinglePlayer()
     {
+        gameData.gameMode = 1;
         SceneManager.LoadScene("SinglePlayer");
     }
     public void MultiPlayer()
     {
+        gameData.gameMode = 2;
         SceneManager.LoadScene("MultiPlayer");
     }
 }

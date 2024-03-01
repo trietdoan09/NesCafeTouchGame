@@ -5,19 +5,20 @@ using UnityEngine;
 public class ShowNCF : MonoBehaviour
 {
     private Animator animator;
-    private SinglePlayerManagement management;
+    [SerializeField] private string tagName;
+    private GameObject management;
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-        management = FindObjectOfType<SinglePlayerManagement>();
+        management = GameObject.FindGameObjectWithTag(tagName);
     }
 
     // Update is called once per frame
     void Update()
     {
-        animator.SetBool("isShow", management.isShowNCF);
-        if (management.isShowNCF)
+        animator.SetBool("isShow", management.GetComponent<GameLogic>().isShowNCF);
+        if (management.GetComponent<GameLogic>().isShowNCF)
         {
             Invoke("DisableAnimationNCF", 1.3f);
         }
@@ -25,6 +26,6 @@ public class ShowNCF : MonoBehaviour
 
     void DisableAnimationNCF()
     {
-        management.isShowNCF = false;
+        management.GetComponent<GameLogic>().isShowNCF = false;
     }
 }
