@@ -5,14 +5,19 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class SinglePlayerManagement : MonoBehaviour
+public class GameLogic : MonoBehaviour
 {
+    public int timeReady;
+    [SerializeField] private TextMeshProUGUI timeToReady;
     [SerializeField] private GameObject iconFace;
     [SerializeField] private GameObject iconNonFace;
-    private int timeCountDown;
+    [SerializeField] private float minPosition;
+    [SerializeField] private float maxPosition;
+    public int timeCountDown;
+    public int timeGetPoint;
     [SerializeField] private TextMeshProUGUI showTime;
     public int point;
-    [SerializeField] private int stack;
+    public int stack;
     [SerializeField] private Slider sliderStack;
     public bool isShowNCF;
     [SerializeField] private GameObject imageNCF;
@@ -20,30 +25,51 @@ public class SinglePlayerManagement : MonoBehaviour
     [SerializeField] private GameObject showWinResult;
     [SerializeField] private GameObject showGameOverResult;
     [SerializeField] private GameObject showBackButton;
+    private ShowResult result;
 
     // Start is called before the first frame update
     void Start()
     {
-        point = 0;
-        stack = 0;
-        timeCountDown = 30;
-        RandomSpawn();
-        InvokeRepeating("RandomSpawn", 3f, 1);
-        StartCoroutine(CheckTime());
-        sliderStack.maxValue = 3;
-        sliderStack.value = stack;
+        timeReady = 3;
+        result = FindObjectOfType<ShowResult>();
+        StartCoroutine(ReadyStartGame());
     }
 
     // Update is called once per frame
     void Update()
     {
-        CountStack();
-        ShowResult();
+        if (timeReady <= 0)
+        {
+            CountStack();
+            ShowResult();
+        }
+    }
+    IEnumerator ReadyStartGame()
+    {
+        while (timeReady >= 0)
+        {
+            yield return new WaitForSeconds(1f);
+            timeReady -= 1;
+            timeToReady.text = $"" + timeReady;
+            if (timeReady <= 0)
+            {
+                point = 0;
+                stack = 0;
+                timeCountDown = 30;
+                showTime.enabled = true;
+                RandomSpawn();
+                InvokeRepeating("RandomSpawn", 3f, 1);
+                StartCoroutine(CheckTime());
+                sliderStack.maxValue = 3;
+                sliderStack.value = stack;
+                timeToReady.enabled = false;
+            }
+            yield return null;
+        }
     }
     private void RandomSpawn()
     {
         var randomIcon = Random.Range(0, 2);
-        Debug.Log(">>>>>>" + randomIcon);
         if(randomIcon == 0)
         {
             SpawnIcon();
@@ -57,20 +83,25 @@ public class SinglePlayerManagement : MonoBehaviour
     {
         var _nonface = Instantiate(iconNonFace);
         _nonface.GetComponent<IconDrop>().isFaceIcon = false;
+        _nonface.transform.position = new Vector3(Random.RandomRange(minPosition, maxPosition), 5.82f, 0);
+
     }
     private void SpawnFace()
     {
         var _face = Instantiate(iconFace);
         _face.GetComponent<IconDrop>().isFaceIcon = true;
+        _face.transform.position = new Vector3(Random.RandomRange(minPosition, maxPosition), 5.82f, 0);
     }
     IEnumerator CheckTime()
     {
         while (timeCountDown > 0)
         {
-            yield return new WaitForSeconds(1f);
-            showTime.text = $"" + timeCountDown;
-            timeCountDown -= 1;
-            yield return null;
+            if (!isShowNCF)
+            {
+                showTime.text = $"00:" + timeCountDown;
+                timeCountDown -= 1;
+            }
+            yield return new WaitForSeconds(2f);
         }
     }
     private void CountStack()
@@ -91,21 +122,12 @@ public class SinglePlayerManagement : MonoBehaviour
     }
     private void ShowResult()
     {
-        if(timeCountDown <= 0 || stack > 2)
+        if(timeCountDown <= 0 || stack > 2 || result.GetComponent<ShowResult>().isMultiEnd)
         {
+            StopAllCoroutines();
             CancelInvoke("RandomSpawn");
             isShowResult = true;
             showBackButton.SetActive(true);
-            if (stack < 3)
-            {
-                showGameOverResult.SetActive(true);
-                showWinResult.SetActive(false);
-            }
-            else
-            {
-                showGameOverResult.SetActive(false);
-                showWinResult.SetActive(true);
-            }
         }
     }
     public void BackToMenu()

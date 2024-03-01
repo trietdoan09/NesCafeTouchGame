@@ -103,7 +103,10 @@ MonoBehaviour:
   - {fileID: 248264220, guid: 628aaf63632bdf3438b7ee2380b5f491, type: 3}
   - {fileID: -117226955, guid: 628aaf63632bdf3438b7ee2380b5f491, type: 3}
   isFaceIcon: 0
-  playerManagement: {fileID: 8395550257518571843, guid: 8f3d4883cd49da24890ea5fddc18b3b2, type: 3}
+  pointIcon: 0
+  speed: 0
+  tempSpeed: 0
+  nameTag: Player1
 --- !u!58 &889513088635804563
 CircleCollider2D:
   m_ObjectHideFlags: 0

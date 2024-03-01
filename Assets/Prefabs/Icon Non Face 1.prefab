@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 7731457910758209872}
   - component: {fileID: 7815781909823986341}
   m_Layer: 0
-  m_Name: Icon Non Face
+  m_Name: Icon Non Face 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106,7 +106,7 @@ MonoBehaviour:
   pointIcon: 0
   speed: 0
   tempSpeed: 0
-  nameTag: Player1
+  nameTag: Player2
 --- !u!61 &7815781909823986341
 BoxCollider2D:
   m_ObjectHideFlags: 0

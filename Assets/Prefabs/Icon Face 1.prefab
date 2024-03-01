@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 2843516472706740954}
   - component: {fileID: 9074098380416887806}
   - component: {fileID: 7731457910758209872}
-  - component: {fileID: 7815781909823986341}
+  - component: {fileID: 889513088635804563}
   m_Layer: 0
-  m_Name: Icon Non Face
+  m_Name: Icon Face 1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75,7 +75,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2140902039, guid: 628aaf63632bdf3438b7ee2380b5f491, type: 3}
+  m_Sprite: {fileID: -117226955, guid: 628aaf63632bdf3438b7ee2380b5f491, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -99,16 +99,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   images:
-  - {fileID: -2140902039, guid: 628aaf63632bdf3438b7ee2380b5f491, type: 3}
-  - {fileID: -2073444, guid: 628aaf63632bdf3438b7ee2380b5f491, type: 3}
-  - {fileID: -818965907, guid: 628aaf63632bdf3438b7ee2380b5f491, type: 3}
+  - {fileID: 1220395433, guid: 628aaf63632bdf3438b7ee2380b5f491, type: 3}
+  - {fileID: 248264220, guid: 628aaf63632bdf3438b7ee2380b5f491, type: 3}
+  - {fileID: -117226955, guid: 628aaf63632bdf3438b7ee2380b5f491, type: 3}
   isFaceIcon: 0
   pointIcon: 0
   speed: 0
   tempSpeed: 0
-  nameTag: Player1
---- !u!61 &7815781909823986341
-BoxCollider2D:
+  nameTag: Player2
+--- !u!58 &889513088635804563
+CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -140,15 +140,5 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
-  m_SpriteTilingProperty:
-    border: {x: 0, y: 0, z: 0, w: 0}
-    pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 1.7704321, y: 1.77}
-    newSize: {x: 1, y: 1}
-    adaptiveTilingThreshold: 0.5
-    drawMode: 0
-    adaptiveTiling: 0
-  m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 1.7704321, y: 1.77}
-  m_EdgeRadius: 0
+  m_Radius: 0.840205

@@ -7,17 +7,17 @@ public class IconDrop : MonoBehaviour
     [SerializeField] private Sprite[] images;
     public bool isFaceIcon;
     [SerializeField] private int pointIcon;
-    private SinglePlayerManagement playerManagement;
+    private GameObject playerManagement;
     [SerializeField] private int speed;
     [SerializeField] private int tempSpeed;
+    [SerializeField] private string nameTag;
     // Start is called before the first frame update
     void Start()
     {
         SetImage();
-        SetPosition();
         speed = Random.Range(3, 8);
         tempSpeed = speed;
-        playerManagement = FindObjectOfType<SinglePlayerManagement>();
+        playerManagement = GameObject.FindGameObjectWithTag(nameTag);
     }
 
     // Update is called once per frame
@@ -30,8 +30,6 @@ public class IconDrop : MonoBehaviour
     private void SetImage()
     {
         var randomImage = Random.Range(0, images.Length);
-        Debug.Log("Imange.Length " + images.Length);
-        Debug.Log("Random image " + randomImage);
         gameObject.GetComponent<SpriteRenderer>().sprite = images[randomImage];
         if (isFaceIcon)
         {
@@ -49,10 +47,6 @@ public class IconDrop : MonoBehaviour
             }
         }
     }
-    private void SetPosition()
-    {
-        gameObject.transform.position = new Vector3(Random.RandomRange(-1.99f, 2.14f), 5.82f, 0);
-    }
     private void DeleteItem()
     {
         if(gameObject.transform.position.y <= -6)
@@ -62,21 +56,29 @@ public class IconDrop : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        if(playerManagement.point + pointIcon <= 0)
+        if (!playerManagement.GetComponent<GameLogic>().isShowNCF)
         {
-            playerManagement.point = 0;
+            if (playerManagement.GetComponent<GameLogic>().point + pointIcon <= 0)
+            {
+                playerManagement.GetComponent<GameLogic>().point = 0;
+            }
+            else
+            {
+                playerManagement.GetComponent<GameLogic>().point += pointIcon;
+                playerManagement.GetComponent<GameLogic>().timeGetPoint = playerManagement.GetComponent<GameLogic>().timeCountDown;
+            }
+            Destroy(gameObject);
         }
-        else
-        {
-            playerManagement.point += pointIcon;
-        }
-        Destroy(gameObject);
     }
     private void TimeStop()
     {
-        if (playerManagement.isShowNCF || playerManagement.isShowResult)
+        if (playerManagement.GetComponent<GameLogic>().isShowNCF || playerManagement.GetComponent<GameLogic>().isShowResult)
         {
             speed = 0;
+            if (playerManagement.GetComponent<GameLogic>().isShowResult)
+            {
+                Destroy(gameObject);
+            }
         }
         else
         {
