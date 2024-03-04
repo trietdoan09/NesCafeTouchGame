@@ -22,8 +22,6 @@ public class GameLogic : MonoBehaviour
     public bool isShowNCF;
     [SerializeField] private GameObject imageNCF;
     public bool isShowResult;
-    [SerializeField] private GameObject showWinResult;
-    [SerializeField] private GameObject showGameOverResult;
     [SerializeField] private GameObject showBackButton;
     private ShowResult result;
 
@@ -55,7 +53,7 @@ public class GameLogic : MonoBehaviour
             {
                 point = 0;
                 stack = 0;
-                timeCountDown = 30;
+                timeCountDown = 32;
                 showTime.enabled = true;
                 RandomSpawn();
                 InvokeRepeating("RandomSpawn", 3f, 1);
@@ -94,11 +92,11 @@ public class GameLogic : MonoBehaviour
     }
     IEnumerator CheckTime()
     {
-        while (timeCountDown > 0)
+        while (timeCountDown >= 0)
         {
             if (!isShowNCF)
             {
-                showTime.text = $"00:" + timeCountDown;
+                showTime.text = $"00:" + (timeCountDown-2);
                 timeCountDown -= 1;
             }
             yield return new WaitForSeconds(2f);
@@ -113,16 +111,25 @@ public class GameLogic : MonoBehaviour
             imageNCF.SetActive(true);
             isShowNCF = true;
             Invoke("DisableShowNCF", 1.3f);
+            StartCoroutine(LoadStack());
+        }
+    }
+    IEnumerator LoadStack()
+    {
+        while(sliderStack.value < stack)
+        {
+            sliderStack.value += 0.01f;
+            yield return new WaitForSeconds(0.01f);
         }
     }
     private void DisableShowNCF()
     {        
-        sliderStack.value = stack;
+        //sliderStack.value = stack;
         imageNCF.SetActive(false);
     }
     private void ShowResult()
     {
-        if(timeCountDown <= 0 || stack > 2 || result.GetComponent<ShowResult>().isMultiEnd)
+        if(timeCountDown < 0 || stack > 2 || result.GetComponent<ShowResult>().isMultiEnd)
         {
             StopAllCoroutines();
             CancelInvoke("RandomSpawn");
