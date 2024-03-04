@@ -64,6 +64,7 @@
     <Compile Include="Assets\Scripts\GameManagement.cs" />
     <Compile Include="Assets\Scripts\ShowNCF.cs" />
     <Compile Include="Assets\Scripts\GameLogic.cs" />
+    <Compile Include="Assets\Scripts\FistScene.cs" />
     <Compile Include="Assets\Scripts\IconDrop.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ShowResult : MonoBehaviour
@@ -13,6 +14,7 @@ public class ShowResult : MonoBehaviour
     [SerializeField] private GameObject lossResultP1;
     [SerializeField] private GameObject winResultP2;
     [SerializeField] private GameObject lossResultP2;
+    [SerializeField] private GameObject endGameText;
     public bool isMultiEnd;
 
 
@@ -42,9 +44,9 @@ public class ShowResult : MonoBehaviour
         isMultiEnd = true;
         int stackP1 = player1.GetComponent<GameLogic>().stack;
         int stackP2 = player2.GetComponent<GameLogic>().stack;
-        if (stackP1 > 2 || stackP2 >2)
+        if (stackP1 > 2 || stackP2 > 2)
         {
-            if(stackP1 > 2)
+            if (stackP1 > 2)
             {
                 winResultP1.SetActive(true);
                 lossResultP2.SetActive(true);
@@ -76,7 +78,7 @@ public class ShowResult : MonoBehaviour
             //stackP1 == stackP2
             if (stackP1 == stackP2)
             {
-                if(pointP1 > pointP2)
+                if (pointP1 > pointP2)
                 {
                     winResultP1.SetActive(true);
                     lossResultP2.SetActive(true);
@@ -84,22 +86,22 @@ public class ShowResult : MonoBehaviour
                 else
                 {
                     //pointP1 = pointP2
-                    if(pointP1 == pointP2)
+                    if (pointP1 == pointP2)
                     {
-                        if(timePointP1 > timePointP2)
+                        if (timePointP1 > timePointP2)
                         {
                             winResultP1.SetActive(true);
                             lossResultP2.SetActive(true);
                         }
-                        else if(timePointP2 < timePointP1)
+                        else if (timePointP2 < timePointP1)
                         {
                             lossResultP1.SetActive(true);
                             winResultP2.SetActive(true);
                         }
-                        else if(timePointP1 == timePointP2)
+                        else if (timePointP1 == timePointP2)
                         {
                             var random = Random.Range(0, 2);
-                            if(random == 0)
+                            if (random == 0)
                             {
                                 winResultP1.SetActive(true);
                                 lossResultP2.SetActive(true);
@@ -127,24 +129,39 @@ public class ShowResult : MonoBehaviour
     }
     private void ShowResultScene()
     {
-        if(gameData.gameMode == 1)
+        if (gameData.gameMode == 1)
         {
-            if (player1.GetComponent<GameLogic>().timeCountDown <= 0 || player1.GetComponent<GameLogic>().stack > 2)
+            if (player1.GetComponent<GameLogic>().timeCountDown < 0 || player1.GetComponent<GameLogic>().stack > 2)
             {
-                SinglePlayer();
+                StartCoroutine(EndGameAnimation());
             }
         }
         else
         {
             if (!isMultiEnd)
             {
-                if (player1.GetComponent<GameLogic>().timeCountDown <= 0 || player2.GetComponent<GameLogic>().timeCountDown <= 0
+                if (player1.GetComponent<GameLogic>().timeCountDown < 0 || player2.GetComponent<GameLogic>().timeCountDown < 0
                     || player1.GetComponent<GameLogic>().stack > 2 || player2.GetComponent<GameLogic>().stack > 2)
                 {
-                    MultiPlayer();
+                    StartCoroutine(EndGameAnimation());
                 }
 
             }
         }
+    }
+    IEnumerator EndGameAnimation()
+    {
+        endGameText.SetActive(true);
+        yield return new WaitForSeconds(1f);
+        endGameText.SetActive(false);
+        if (gameData.gameMode == 1)
+        {
+            SinglePlayer();
+        }
+        else
+        {
+            MultiPlayer();
+        }
+        yield return null;
     }
 }
